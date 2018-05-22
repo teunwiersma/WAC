@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<title>Les 6 Practicum 1 text area</title>
+<h1>Les 6 Practicum 1 text area</h1>
+<body>
+	<textarea type="text" id="inputField" onkeyup="tekstStorage()" ></textarea>
+</body>
+<script>
+	
+function tekstStorage() {
+    var tekstInput = document.getElementById("inputField").value;
+    window.localStorage.setItem("tekst", tekstInput);
+    wind.localStorage.clear();
+}
+
+
+		console.log(window.localStorage);
+
+</script>
+
+
+</html>

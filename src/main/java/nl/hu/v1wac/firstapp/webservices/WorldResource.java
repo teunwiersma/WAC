@@ -9,6 +9,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import nl.hu.v1wac.firstapp.model.Country;
+import nl.hu.v1wac.firstapp.model.ServiceProvider;
+import nl.hu.v1wac.firstapp.model.WorldService;
+
 @Path("/countries")
 public class WorldResource {
 
@@ -22,6 +26,13 @@ public class WorldResource {
 		for (Country c : service.getAllCountries()) {
 			JsonObjectBuilder job = Json.createObjectBuilder();
 			job.add("countries", c.getName());
+			job.add("code", c.getCode());
+			job.add("capital", c.getCapital());
+			job.add("Goverment", c.getGovernment());
+			job.add("regio", c.getCapital());
+			job.add("populatie", c.getPopulation());
+			job.add("surface", c.getSurface());
+
 			jab.add(job);
 		}
 
@@ -35,61 +46,64 @@ public class WorldResource {
 	public String getLand(@PathParam("code") String code) {
 		WorldService service = ServiceProvider.getWorldService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
-		
+
 		for (Country c : service.getAllCountries()) {
 			if(c.getCode().equals(code)) {
 			JsonObjectBuilder job = Json.createObjectBuilder();
 			job.add("Land", c.getName());
 			job.add("code", c.getCode());
-			job.add("captial", c.getCapital());
+			job.add("capital", c.getCapital());
 			job.add("Goverment", c.getGovernment());
+			job.add("regio", c.getCapital());
+			job.add("populatie", c.getPopulation());
+			job.add("surface", c.getSurface());
 
 			jab.add(job);
 			}
 		}
-		
+
 		JsonArray array = jab.build();
 		return array.toString();
 	}
-	
+
 	@GET
 	@Path("largestsurfaces")
 	@Produces("application/json")
 	public String getSurface() {
 		WorldService service = ServiceProvider.getWorldService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
-		
+
 		for (Country c : service.get10LargestSurfaces()) {
 			JsonObjectBuilder job = Json.createObjectBuilder();
 			job.add("countries: ", c.getName());
 			job.add("oppverlakte:", c.getSurface());
 			jab.add(job);
-			
+
 		}
 
 		JsonArray array = jab.build();
 		return array.toString();
-		
+
 	}
-	
+
 	@GET
 	@Path("largestpopulation")
 	@Produces("application/json")
 	public String getPopulation() {
 		WorldService service = ServiceProvider.getWorldService();
 		JsonArrayBuilder jab = Json.createArrayBuilder();
-		
+
 		for (Country c : service.get10LargestSurfaces()) {
 			JsonObjectBuilder job = Json.createObjectBuilder();
 			job.add("countries: ", c.getName());
 			job.add("populatie:", c.getPopulation());
 			jab.add(job);
-			
+
 		}
 
 		JsonArray array = jab.build();
 		return array.toString();
-		
+
 	}
 
 }

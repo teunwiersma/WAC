@@ -1,0 +1,32 @@
+
+
+body{
+	background-color: #d8d5ce;
+}
+
+h1{
+	color: white;
+	background-color: gray;
+	padding : 10px;
+	font-weight: bold;
+}
+
+h2{
+	color: white;
+	background-color: gray;
+	padding : 10px;
+}
+
+h3{
+	color: white;
+	background-color: gray;
+	padding : 10px;
+}
+
+.hoofdstad:hover{
+	background-color: brown;
+	
+}
+.hoofdstad{
+	cursor: pointer;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset= "UTF-8">
+<title>les 6 practicum 1 label</title>
+</head>
+<h1>Les 6 Practicum 1 text area</h1>
+<body>
+	<label id="label"></label>
+</body>
+<script>
+
+window.addEventListener('storage', function(event) {
+    var x = window.localStorage.getItem("tekst");
+    document.querySelector("#label").innerHTML = event.newValue;
+});
+//function functie(){
+	
+	
+	//window.addEventListener('storage', function(event) {
+	//document.querySelector("Label").innerHTML = event.newValue;
+	//console.log("label : " + event.newValue);
+	//})
+	
+//}
+	console.log(window.localStorage);
+</script>
+</html>

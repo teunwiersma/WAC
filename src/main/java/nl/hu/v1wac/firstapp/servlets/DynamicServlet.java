@@ -1,4 +1,4 @@
-package nl.hu.v1wac.firstapp.firstapp.servlets;
+package nl.hu.v1wac.firstapp.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
