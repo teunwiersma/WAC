@@ -27,7 +27,8 @@ fetch("https://ipapi.co/json")
 
     weatherInfo(myJson.city);
     loadCountries();
- 
+    weizigLand();
+    toevoegenLand();
   });
 }
 function weatherInfo(city){
@@ -37,7 +38,7 @@ function weatherInfo(city){
 	        
 	    	var weerdata = JSON.parse(window.localStorage.getItem(city));
 
-	        console.log("INFORMATIE LOCALSTORAGE");
+	        console.log("INFORMATIE UIT LOCALSTORAGE");
 	        var sunriseM = new Date((weerdata.sys.sunrise) * 1000);
 	        var sunsetM = new Date((weerdata.sys.sunset) * 1000);
 
@@ -55,12 +56,12 @@ function weatherInfo(city){
 	        document.querySelector("#h2").innerHTML = "Het weer in " + weerdata.name;
 
 	    }else{
-	fetch("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=208f85213b9c300d1b445708c11a9d80")
+	fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=208f85213b9c300d1b445708c11a9d80")
 	        .then(response => response.json())
 	        .then(function(weerdata) {
-	        console.log("INFORMATIE FETCH");
+	        console.log("INFORMATIE OP HALEN");
 
-	        weerdata["time"] = new Date().getTime() + 10000;
+	        weerdata["time"] = new Date().getTime() + 600000;
 	        console.log(weerdata["time"]);
 	        window.localStorage.setItem(city, JSON.stringify(weerdata));
 	        var sunriseM = new Date((weerdata.sys.sunrise) * 1000);
@@ -89,19 +90,25 @@ function loadCountries(){
 
     .then(function(landen){
 
+
       for( const land of landen){
-        var row = document.createElement("tr");
+        var row = document.createElement("tr");        
         	row.className = "hoofdstad";
 
         row.setAttribute("id", land.capital);
         row.addEventListener("click",function(){
         	weatherChange(this.id);
         	weatherInfo(this.id);
+
+        	
           
         });
 
-
-
+        var codeColumn = document.createElement("td");
+        var codeText = document.createTextNode(land.code);
+        codeColumn.appendChild(codeText);
+        row.appendChild(codeColumn);
+        
         var countryColumn = document.createElement("td");
         var countryText = document.createTextNode(land.countries);
         countryColumn.appendChild(countryText);
@@ -109,6 +116,7 @@ function loadCountries(){
 
         var capitalColumn = document.createElement("td");
         var capitalText = document.createTextNode(land.capital);
+        capitalColumn.setAttribute("id", land.capital);
         capitalColumn.appendChild(capitalText);
         row.appendChild(capitalColumn);
 
@@ -127,14 +135,87 @@ function loadCountries(){
         populationColumn.appendChild(populationText);
         row.appendChild(populationColumn);
 
+        var updateColumn = document.createElement("td");
+        var update = document.createElement("button");
+        update.innerHTML = 'wijzig';
+        update.setAttribute = ('id', land.capital);
+        row.appendChild(updateColumn);
+        updateColumn.appendChild(update);
+        
+        var verwijderColumn = document.createElement("td");
+        var verwijder = document.createElement("button");
+        verwijder.innerHTML = 'delete';
+        update.setAttribute = ('id', land.capital);
+        row.appendChild(verwijderColumn);
+        verwijderColumn.appendChild(verwijder);
+        
+        row.appendChild(verwijderColumn);
+        
         document.querySelector("#countryList").appendChild(row);
+        
+        update.addEventListener("click", function (){
+          document.querySelector("#code").setAttribute("value", land.code)
+      	  document.querySelector("#Land").setAttribute("value", land.countries);
+      	  document.querySelector("#hoofdstad").setAttribute("value", land.capital);
+      	  document.querySelector("#region").setAttribute("value", land.regio);
+      	  document.querySelector("#oppervlakte").setAttribute("value", land.surface);
+      	  document.querySelector("#inwoners").setAttribute("value", land.populatie);
+      	  
+        })
+        
+      	verwijder.addEventListener("click", function(){
+      		 var id = land.code;
+      		 console.log(id);
+          	  fetch("restservices/countries/" + id, { method : 'DELETE'})
+          	  .then(function(response){
+          		  if(response.ok)
+          			  console.log("Land verwijderd"),
+          		location.reload();
+          		  else if (response.status == 404)
+          			  console.log("Land niet gevonden");
+          		  else console.log("kan land niet verwijderen");
+          	  })
 
+          });
+
+        
       }
+      
+      
+    });
+}
+
+function weizigLand(){
+	document.querySelector("#opslaan").addEventListener("click", function(){
+  	  var land = document.querySelector("#code").value;
+  	  var formData = new FormData(document.querySelector("#updateform"));
+  	  var encData = new URLSearchParams(formData.entries());
+
+  	  fetch ("restservices/countries/" + land, { method : 'PUT', body: encData})
+  	  .then (response => response.json())
+  	  .then (function(myJson){ console.log(myJson); location.reload; })
+  	location.reload();
     })
 }
 
+function toevoegenLand(){
+	  document.querySelector("#toevoegen").addEventListener("click", function (){
+      var formData = new FormData(document.querySelector("#toevoegform"));
+      var encData = new URLSearchParams(formData.entries());
+      
+      fetch("restservices/countries/", { method: 'POST', body: encData})
+      .then(response => response.json())
+      .then(function(myJson){ console.log(myJson); });
+      
+      location.reload();
+      
+	})
+}
+
+
+
 function weatherChange(city){
-	 var url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=d6aa861e299de982958d6d096764a496";
+	 var url = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=d6aa861e299de982958d6d096764a496";
 	  fetch(url)
 	    .then(response => response.json())
 
@@ -160,8 +241,19 @@ function weatherChange(city){
 }
 
 
+function login(event){
+	var formData = new FormData(document.querySelector("#loginform"));
+	var encData = new URLSearchParams(formData.entries());
+	fetch("restservices/authentication", {method: 'POST', body: encData})
+		.then(function(reponse){
+			if(response.ok) return response.json();
+			else throw "Wrong username/password";
+		})
+		.then (myJson => window.sessionStorage.setItem("myJWT", myJson.JWT))
+		.catch(error => console.log(error));
+}
 
-
+document.querySelector("#login").addEventListener("click", login);
 
 
 console.log(localStorage);

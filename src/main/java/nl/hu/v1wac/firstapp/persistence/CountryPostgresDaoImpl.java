@@ -12,8 +12,7 @@ import nl.hu.v1wac.firstapp.model.Country;
 
 public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDao {
 
-	private ArrayList<Country> Landen = new ArrayList<Country>();
-
+	
 	private List<Country> selectCountry(String query) {
 		List<Country> results = new ArrayList<Country>();
 		try (Connection con = super.getConnection()) {
@@ -40,38 +39,37 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 
 	@Override
 	public boolean save(Country country) {
+		try (Connection connection = super.getConnection()) {
+			String query = "insert into country(code, name, capital, continent, region, surfacearea, population, governmentform) values(?, ?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(1, country.getCode());
+			stmt.setString(2, country.getName());
+			stmt.setString(3, country.getCapital());
+			stmt.setString(4, country.getContinent());
+			stmt.setString(5, country.getRegion());
+			stmt.setDouble(6, country.getSurface());
+			stmt.setInt(7, country.getPopulation());
+			stmt.setString(8, country.getGovernment());
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 		return true;
 	}
+	
 
 	@Override
 	public List<Country> findAll() {
-		return selectCountry(
-				"Select CODE, NAME, CONTINENT, CAPITAL, REGION, SURFACEAREA, POPULATION, GOVERNMENTFORM from Country;");
+		return selectCountry("Select CODE, NAME, CONTINENT, CAPITAL, REGION, SURFACEAREA, POPULATION, GOVERNMENTFORM from Country ORDER BY NAME ASC;");
 	}
 
 	@Override
 	public Country findByCode(String code) {
-		/*
-		 * Country c = null;
-		 * 
-		 * try (Connection con = super.getConnection()) { Statement stmt =
-		 * con.createStatement(); ResultSet rs =
-		 * stmt.executeQuery("select * from Country where code =" + code + "");
-		 * 
-		 * while (rs.next()) { c = new Country(rs.getString("code"),
-		 * rs.getString("name"), rs.getString("capital"), rs.getString("continent"),
-		 * rs.getString("region"), rs.getDouble("surfacearea"), rs.getInt("population"),
-		 * rs.getString("governmentform"));
-		 * 
-		 * } rs.close(); stmt.close(); } catch (Exception sqle) {
-		 * System.out.println(sqle); } return c;
-		 */ 
 		Country ctry = null;
 
 		try (Connection connection = super.getConnection()) {
 			Statement stmt = connection.createStatement();
-			ResultSet resultset = stmt.executeQuery(
-					"select code, name, capital, continent, region, surfacearea, population, governmentform from country where code = '"+ code + "';");
+			ResultSet resultset = stmt.executeQuery("select code, name, capital, continent, region, surfacearea, population, governmentform from country where code = '"+ code + "';");
 
 			while (resultset.next()) {
 				ctry = new Country(resultset.getString("code"),
@@ -100,21 +98,39 @@ public class CountryPostgresDaoImpl extends PostgresBaseDao implements CountryDa
 	}
 
 	public boolean update(Country country) {
-
-		System.out.println("update");
-		int index = Landen.indexOf(country);
-
-		if (index == -1) {
-			return false;
+		try (Connection connection = super.getConnection()){
+			String query = "update  country set name = ?, capital = ?, region = ?, surfacearea = ?, population = ? where code = ?";
+			PreparedStatement stmt = connection.prepareStatement(query);
+			stmt.setString(6, country.getCode());
+			stmt.setString(1, country.getName());
+			stmt.setString(2, country.getCapital());
+			stmt.setString(3, country.getRegion());
+			stmt.setDouble(4, country.getSurface());
+			stmt.setInt(5, country.getPopulation());
+			stmt.executeUpdate();
+				
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-
-		Landen.set(index, country);
-
 		return true;
 	}
 
 	public boolean delete(Country country) {
-		return Landen.remove(country);
+		boolean deleted = false;
+        try (Connection connection = super.getConnection()){
+            String query = "delete from country where code = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setString(1, country.getCode());
+
+            if(stmt.executeUpdate() == 1) {
+                deleted = true;
+            }
+            stmt.executeUpdate();
+
+        }catch(Exception e) {
+            e.getMessage();
+        }
+        return true;
 	}
 
 }

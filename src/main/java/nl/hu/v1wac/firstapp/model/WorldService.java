@@ -25,4 +25,44 @@ public class WorldService {
 	public Country getCountryByCode(String code) {
 		return countryDaoImpl.findByCode(code);
 	}
+
+
+	public Country updateLand(String c, String nm, String h, String r, double o, int i) {
+		for(Country ctry :getAllCountries()) {
+			if(ctry.getCode().equals(c)) {
+				ctry.setName(nm);
+				ctry.setCapital(h);
+				ctry.setPopulation(i);
+				ctry.setRegion(r);
+				ctry.setSurface(o);
+				countryDaoImpl.update(ctry);
+				return ctry;
+			}
+		}
+		return null;
+	}
+
+	public boolean deleteCountry(String c) {
+		for (Country ctry : getAllCountries()) {
+			if(ctry.getCode().equals(c)) {
+				countryDaoImpl.delete(ctry);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Country saveLand(String code, String naam, String hoofdstad, String regio, double oppervlakte, int inwoners, String continent, String goverment) {
+		for(Country ctry :getAllCountries()) {
+			if(!(ctry.getCode().equals(code))) {
+				
+				Country newland = new Country( code,  naam,  hoofdstad,  continent,  regio,  oppervlakte,  inwoners,  goverment);
+				countryDaoImpl.save(newland);
+				return newland;
+			
+		}
+		
+	}
+		return null;
+}
 }

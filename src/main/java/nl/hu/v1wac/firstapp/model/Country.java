@@ -62,4 +62,26 @@ public class Country {
 	public double getLongitude() {
 		return longitude;
 	}
+	
+	public void setName(String nm) {
+		this.name = name;
+	}
+	
+	public void setCapital(String capital) {
+		this.capital = capital;
+	}
+	
+	public void setRegion(String capital) {
+		this.region = region;
+	}
+	
+	public void setSurface(double surface) {
+		this.surface = surface;
+	}
+	
+	public void setPopulation(int population) {
+		this.population = population;
+	}
+
+
 }
