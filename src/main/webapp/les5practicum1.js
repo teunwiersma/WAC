@@ -167,7 +167,7 @@ function loadCountries(){
       	verwijder.addEventListener("click", function(){
       		 var id = land.code;
       		 
-      		var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
+      		var fetchoptions = {method: 'DELETE', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
       		
       		 console.log(id);
           	  fetch("restservices/countries/" + id, fetchoptions)
@@ -209,7 +209,7 @@ function toevoegenLand(){
       var formData = new FormData(document.querySelector("#toevoegform"));
       var encData = new URLSearchParams(formData.entries());
       
-      var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
+      var fetchoptions = {method: 'POST', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
       
       fetch("restservices/countries/", fetchoptions)
       .then(response => response.json())
@@ -260,9 +260,8 @@ function login(event){
 	 var formData = new FormData(document.querySelector("#loginform"));
 	 var encData = new URLSearchParams(formData.entries());
 	 
-	 var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
 
-	 fetch("restservices/authentication", fetchoptions)
+	 fetch("restservices/authentication", { method : 'POST', body: encData})
 	        .then(function(response){
 	         if(response.ok){
 	            location.reload();
@@ -278,6 +277,5 @@ function login(event){
 	    });
 }
 
-console.log(localStorage);
 
 initpage();
