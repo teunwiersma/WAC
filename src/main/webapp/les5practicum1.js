@@ -45,13 +45,22 @@ function weatherInfo(city){
 
 	        var sunset = sunsetM.getHours() + ":" + sunsetM.getMinutes() + ":" + sunsetM.getSeconds();
 	        var sunrise = sunriseM.getHours() + ":" + sunriseM.getMinutes() + ":" + sunriseM.getSeconds();
+	        
+	        var windrichting = weerdata.wind.deg;
+	        
+	        var windrichingen
+	        
+	        if(windrichting > 247 && windrichting < 290){
+	        	windrichtingen = "West"
+	        }
+	        
 
 	        var temperatuur = (weerdata.main.temp - 273.15).toFixed(1);
 
 	        document.querySelector("#temperatuur").innerHTML = temperatuur;
 	        document.querySelector("#luchtvochtigheid").innerHTML = weerdata.main.humidity;
 	        document.querySelector("#windsnelheid").innerHTML = weerdata.wind.speed;
-	        document.querySelector("#windrichting").innerHTML = weerdata.wind.deg;
+	        document.querySelector("#windrichting").innerHTML = windrichtingen;
 	        document.querySelector("#zonsopgang").innerHTML = sunrise;
 	        document.querySelector("#zonsondergang").innerHTML = sunset;
 	        document.querySelector("#h2").innerHTML = "Het weer in " + weerdata.name;
