@@ -200,7 +200,6 @@ function weizigLand(){
   	  fetch ("restservices/countries/" + land, fetchoptions)
   	  .then (response => response.json())
   	  .then (function(myJson){ console.log(myJson); location.reload; })
-  	location.reload();
     })
 }
 
