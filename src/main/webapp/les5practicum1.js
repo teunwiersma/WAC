@@ -174,7 +174,7 @@ function loadCountries(){
           	  .then(function(response){
           		  if(response.ok)
           			  console.log("Land verwijderd"),
-          		location.reload();
+          			  location.reload();
           		  else if (response.status == 404)
           			  console.log("Land niet gevonden");
           		  else console.log("kan land niet verwijderen");
