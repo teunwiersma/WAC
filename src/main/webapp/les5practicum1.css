@@ -25,6 +25,41 @@ h1{
 }
 
 #CODE {
-	 position: absolute;
+	position: absolute;
+    left: 100px;
+}
+
+#HOOOFDSTAD{
+	position: absolute;
+    left: 100px;
+}
+
+#LAND{
+	position: absolute;
+    left: 100px;
+}
+
+#REGIO{
+	position: absolute;
+    left: 100px;
+}
+
+#OPPERVLAKTE{
+	position: absolute;
+    left: 100px;
+}
+
+#INWONERS{
+	position: absolute;
+    left: 100px;
+}
+
+#OVERHEID{
+	position: absolute;
+    left: 100px;
+}
+
+#CONTINENT{
+	position: absolute;
     left: 100px;
 }
