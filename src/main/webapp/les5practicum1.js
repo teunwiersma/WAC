@@ -166,8 +166,11 @@ function loadCountries(){
         
       	verwijder.addEventListener("click", function(){
       		 var id = land.code;
+      		 
+      		var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
+      		
       		 console.log(id);
-          	  fetch("restservices/countries/" + id, { method : 'DELETE'})
+          	  fetch("restservices/countries/" + id, fetchoptions)
           	  .then(function(response){
           		  if(response.ok)
           			  console.log("Land verwijderd"),
@@ -191,8 +194,10 @@ function weizigLand(){
   	  var land = document.querySelector("#code").value;
   	  var formData = new FormData(document.querySelector("#updateform"));
   	  var encData = new URLSearchParams(formData.entries());
+  	  
+  	  var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
 
-  	  fetch ("restservices/countries/" + land, { method : 'PUT', body: encData})
+  	  fetch ("restservices/countries/" + land, fetchoptions)
   	  .then (response => response.json())
   	  .then (function(myJson){ console.log(myJson); location.reload; })
   	location.reload();
@@ -204,7 +209,9 @@ function toevoegenLand(){
       var formData = new FormData(document.querySelector("#toevoegform"));
       var encData = new URLSearchParams(formData.entries());
       
-      fetch("restservices/countries/", { method: 'POST', body: encData})
+      var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
+      
+      fetch("restservices/countries/", fetchoptions)
       .then(response => response.json())
       .then(function(myJson){ console.log(myJson); });
       
@@ -252,8 +259,10 @@ function login(event){
 
 	 var formData = new FormData(document.querySelector("#loginform"));
 	 var encData = new URLSearchParams(formData.entries());
+	 
+	 var fetchoptions = {method: 'PUT', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
 
-	 fetch("restservices/authentication", {method:'POST', body: encData})
+	 fetch("restservices/authentication", fetchoptions)
 	        .then(function(response){
 	         if(response.ok){
 	            location.reload();
@@ -267,22 +276,7 @@ function login(event){
 	            .then(myToken => window.sessionStorage.setItem("sessionToken", myToken.JWT))
 	            .catch(error => console.log(error));
 	    });
-	}
-/*	var formData = new FormData(document.querySelector("#loginform"));
-	var encData = new URLSearchParams(formData.entries());
-	fetch("restservices/authentication", {method: 'POST', body: encData})
-		.then(function(reponse){
-			if(response.ok){
-				alert("u  bent succesvol ingelogd")
-				return response.json();
-			}else{ throw "Wrong username/password"};
-		})
-		.then (myJson => window.sessionStorage.setItem("myJWT", myJson.JWT))
-		.catch(error => console.log(error));
-}*/
-
-//document.querySelector("#login").addEventListener("click", login);
-
+}
 
 console.log(localStorage);
 
