@@ -47,14 +47,33 @@ function weatherInfo(city){
 	        var sunrise = sunriseM.getHours() + ":" + sunriseM.getMinutes() + ":" + sunriseM.getSeconds();
 	        
 	        var windrichting = weerdata.wind.deg;
-	        
-	        var windrichingen
+	        var windrichingen 
 	        
 	        if(windrichting > 247 && windrichting < 290){
 	        	windrichtingen = "West"
 	        }
-	        
-
+	        else if(windrichting > 201 && windrichting < 247){
+	        	windrichtingen = "Zuid West"
+	        }
+	        else if(windrichting > 157 && windrichting < 202){
+	        	windrichtingen = "Zuid"
+	        }
+	        else if(windrichting > 111 && windrichting < 157){
+	        	windrichtingen = "Zuid Oost"
+	        }
+	        else if(windrichting > 67 && windrichting < 111){
+	        	windrichtingen = "Oost"
+	        }
+	        else if(windrichting > 21 && windrichting < 67){
+	        	windrichtingen = "Noord Oost"
+	        }
+	        else if(windrichting > 337 && windrichting < 21){
+	        	windrichtingen = "Noord"
+	        }
+	        else if(windrichting > 292 && windrichting < 337){
+	        	windrichtingen = "Noord West"
+	        }
+	       
 	        var temperatuur = (weerdata.main.temp - 273.15).toFixed(1);
 
 	        document.querySelector("#temperatuur").innerHTML = temperatuur;
