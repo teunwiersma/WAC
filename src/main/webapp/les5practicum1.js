@@ -23,6 +23,8 @@ fetch("https://ipapi.co/json")
     document.querySelector("#latitude").append(latitude);
     document.querySelector("#longitude").append(longitude);
     document.querySelector("#ip").append(ip);
+    
+    document.querySelector("#h1").innerHTML = "Ingelogd als " + window.sessionStorage.getItem("username");
 
 
     weatherInfo(myJson.city);
