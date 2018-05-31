@@ -243,7 +243,32 @@ function weatherChange(city){
 
 
 function login(event){
-	var formData = new FormData(document.querySelector("#loginform"));
+    document.querySelector("#login").addEventListener("click", function(){
+
+	 var username = document.querySelector("#username_id").value;
+	 var password = document.querySelector("#password_id").value;
+	 window.sessionStorage.setItem('username', username);
+	 window.sessionStorage.setItem('password', password);
+
+	 var formData = new FormData(document.querySelector("#formuser"));
+	 var encData = new URLSearchParams(formData.entries());
+
+	 fetch("restservices/authentication", {method:'POST', body: encData})
+	        .then(function(response){
+	         if(response.ok){
+	            location.reload();
+	            alert("U bent succesvol ingelogd");
+	            return response.json();
+	          }else{
+	                alert("Wrong username/password");
+	                throw "Wrong username/password";
+	    }})
+
+	            .then(myToken => window.sessionStorage.setItem("sessionToken", myToken.JWT))
+	            .catch(error => console.log(error));
+	    });
+	}
+/*	var formData = new FormData(document.querySelector("#loginform"));
 	var encData = new URLSearchParams(formData.entries());
 	fetch("restservices/authentication", {method: 'POST', body: encData})
 		.then(function(reponse){
@@ -254,9 +279,9 @@ function login(event){
 		})
 		.then (myJson => window.sessionStorage.setItem("myJWT", myJson.JWT))
 		.catch(error => console.log(error));
-}
+}*/
 
-document.querySelector("#login").addEventListener("click", login);
+//document.querySelector("#login").addEventListener("click", login);
 
 
 console.log(localStorage);
