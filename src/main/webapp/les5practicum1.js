@@ -167,7 +167,7 @@ function loadCountries(){
       	verwijder.addEventListener("click", function(){
       		 var id = land.code;
       		 
-      		var fetchoptions = {method: 'DELETE', body:encData, headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
+      		var fetchoptions = {method: 'DELETE', headers: {'Authorization' : 'Bearer ' + window.sessionStorage.getItem("sessionToken")}};
       		
       		 console.log(id);
           	  fetch("restservices/countries/" + id, fetchoptions)
