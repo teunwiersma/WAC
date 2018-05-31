@@ -246,8 +246,10 @@ function login(event){
 	var encData = new URLSearchParams(formData.entries());
 	fetch("restservices/authentication", {method: 'POST', body: encData})
 		.then(function(reponse){
-			if(response.ok) return response.json();
-			else throw "Wrong username/password";
+			if(response.ok){
+				alert("u  bent succesvol ingelogd")
+				return response.json();
+			}else{ throw "Wrong username/password"};
 		})
 		.then (myJson => window.sessionStorage.setItem("myJWT", myJson.JWT))
 		.catch(error => console.log(error));
