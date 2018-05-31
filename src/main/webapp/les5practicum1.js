@@ -245,12 +245,12 @@ function weatherChange(city){
 function login(event){
     document.querySelector("#login").addEventListener("click", function(){
 
-	 var username = document.querySelector("#username_id").value;
-	 var password = document.querySelector("#password_id").value;
+	 var username = document.querySelector("#username").value;
+	 var password = document.querySelector("#password").value;
 	 window.sessionStorage.setItem('username', username);
 	 window.sessionStorage.setItem('password', password);
 
-	 var formData = new FormData(document.querySelector("#formuser"));
+	 var formData = new FormData(document.querySelector("#loginform"));
 	 var encData = new URLSearchParams(formData.entries());
 
 	 fetch("restservices/authentication", {method:'POST', body: encData})
