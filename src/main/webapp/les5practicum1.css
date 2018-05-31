@@ -24,3 +24,7 @@ h1{
 	width: 100%;
 }
 
+#CODE {
+	 position: absolute;
+    left: 100px;
+}
