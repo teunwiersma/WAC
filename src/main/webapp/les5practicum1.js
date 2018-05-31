@@ -29,6 +29,7 @@ fetch("https://ipapi.co/json")
     loadCountries();
     weizigLand();
     toevoegenLand();
+    login();
   });
 }
 function weatherInfo(city){
